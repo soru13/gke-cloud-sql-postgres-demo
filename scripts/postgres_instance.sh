@@ -20,7 +20,7 @@ set -o errexit
 # to finish and causes gcloud to time out. The loop in the next section is
 # used to wait for the instance to reach a good state
 gcloud sql instances create "$INSTANCE_NAME" \
---database-version POSTGRES_9_6 \
+--database-version POSTGRES_11 \
 --region "$INSTANCE_REGION" \
 --tier db-f1-micro \
 --storage-type HDD \

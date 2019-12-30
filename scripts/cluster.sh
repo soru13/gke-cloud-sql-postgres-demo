@@ -27,11 +27,12 @@ GKE_VERSION=$(gcloud container get-server-config --zone "$CLUSTER_ZONE" \
   --format="value(validMasterVersions[0])")
 
 gcloud container clusters create "$CLUSTER_NAME" \
---cluster-version "$GKE_VERSION" \
+--cluster-version 1.13.11-gke.14 \
 --num-nodes 1 \
+--machine-type "custom-1-1024" \
 --enable-autorepair \
 --zone "$CLUSTER_ZONE" \
---service-account="postgres-demo-node-sa@$PROJECT".iam.gserviceaccount.com \
+--service-account="paixus-node-sa@$PROJECT".iam.gserviceaccount.com \
 
 # Setting up .kube/config. This happens normally if you don't use --async
 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$CLUSTER_ZONE"

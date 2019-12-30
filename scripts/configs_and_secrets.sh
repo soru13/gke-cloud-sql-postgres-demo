@@ -14,13 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#crear namespace
+kubectl create production
+
 # Here we are installing secrets into the Kubernetes cluster
 # Installing them into the cluster makes it very easy to access them from
 # the appliations in the cluster
-kubectl --namespace default create secret generic cloudsql-sa-creds \
+kubectl --namespace production create secret generic cloudsql-sa-creds \
 --from-file=credentials.json=credentials.json
 
-kubectl --namespace default create secret generic pgadmin-console \
+kubectl --namespace production create secret generic pgadmin-console \
 --from-literal=user="$PG_ADMIN_CONSOLE_EMAIL" \
 --from-literal=password="$PG_ADMIN_CONSOLE_PASSWORD"
 
@@ -30,5 +33,5 @@ CONNECTION_NAME=$(gcloud sql instances describe "$INSTANCE_NAME" \
 # You can also store non-sensitive information in the cluster
 # similar to a secret. In this case we are using a configMap, which
 # is also very easy to access from applications in the cluster
-kubectl --namespace default create configmap connectionname \
+kubectl --namespace production create configmap connectionname \
 --from-literal=connectionname="$CONNECTION_NAME"
