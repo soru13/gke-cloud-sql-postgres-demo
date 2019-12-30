@@ -20,7 +20,7 @@
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
-kubectl --namespace production create -f "$ROOT"/../manifests/pgadmin-deployment.yaml
+kubectl --namespace production create -f ../manifests/pgadmin-deployment.yaml
 
 # Waiting for the pod to actually deploy correctly
-kubectl --namespace production rollout status --request-timeout="5m" -f "$ROOT"/../manifests/pgadmin-deployment.yaml
+kubectl --namespace production rollout status --request-timeout="5m" -f ../manifests/pgadmin-deployment.yaml
