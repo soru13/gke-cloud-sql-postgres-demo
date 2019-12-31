@@ -90,8 +90,8 @@ ROOT=$(dirname "${BASH_SOURCE[0]}")
 if "$ROOT"/scripts/prerequisites.sh; then
   "$ROOT"/scripts/enable_apis.sh
   #"$ROOT"/scripts/postgres_instance.sh
-  "$ROOT"/scripts/service_account.sh
+  #"$ROOT"/scripts/service_account.sh
   "$ROOT"/scripts/cluster.sh
-  "$ROOT"/scripts/configs_and_secrets.sh
+  #"$ROOT"/scripts/configs_and_secrets.sh
   "$ROOT"/scripts/pgadmin_deployment.sh
 fi
