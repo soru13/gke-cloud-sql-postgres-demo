@@ -20,8 +20,6 @@
 
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
-kubectl create namespace production
-
 kubectl --namespace production create -f "$ROOT"/../manifests/pgadmin-deployment.yaml
 
 # Waiting for the pod to actually deploy correctly

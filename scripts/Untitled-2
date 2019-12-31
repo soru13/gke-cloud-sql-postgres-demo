@@ -1,0 +1,19 @@
+gcloud iam service-accounts create mysql-paixus-sa --display-name postgres-paixus-sa
+
+mysql-paixus-sa@paixus.iam.gserviceaccount.com
+
+
+gcloud projects add-iam-policy-binding paixus \
+--member serviceAccount:mysql-paixus-sa@paixus.iam.gserviceaccount.com \
+--role roles/cloudsql.client > /dev/null
+
+
+gcloud iam service-accounts keys create credentials-ghost.json --iam-account mysql-paixus-sa@paixus.iam.gserviceaccount.com
+
+
+kubectl --namespace production create secret generic cloudsql-instance-credentials \
+--from-file=credentials-ghost.json=credentials-ghost.json
+
+
+kubectl create secret generic cloudsql-instance-credentials 
+--from-file=credentials.json=[PATH_TO_DOWNLOADED_JSON_SECRET]

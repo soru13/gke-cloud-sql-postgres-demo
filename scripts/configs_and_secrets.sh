@@ -15,7 +15,7 @@
 # limitations under the License.
 
 #crear namespace
-#kubectl create namespace production
+kubectl create namespace production
 
 # Here we are installing secrets into the Kubernetes cluster
 # Installing them into the cluster makes it very easy to access them from

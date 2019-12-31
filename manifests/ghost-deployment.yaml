@@ -1,0 +1,132 @@
+# deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-blog
+  labels:
+    app: ghost-blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost-blog
+  template:
+    metadata:
+      labels:
+        app: ghost-blog
+    spec:
+      containers:
+        # ghost container
+        - name: ghost-container
+          image: ghost:3.1.1-alpine
+          imagePullPolicy: IfNotPresent
+          # ghost always starts on this port
+          ports:
+            - containerPort: 2368
+          # envs to run ghost in production
+          env:
+            - name: mail__transport
+              value: SMTP
+            - name: mail__options__service
+              value: Sendgrid
+            # use mail envvars from the mail-secrets file
+            - name: mail__options__auth__user
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secrets
+                  key: mailuser
+            - name: mail__options__auth__pass
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secrets
+                  key: mailpass
+            # end of mailenvs
+            - name: mail__options__port
+              value: "2525"
+            - name: database__client
+              value: mysql
+            # CloudSQL credentials to connect with the Proxyuser
+            - name: database__connection__user
+            # referencing to secret file
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: user
+            - name: database__connection__password
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
+            # end of Cloud SQL secrets
+            - name: database__connection__host
+              value: "127.0.0.1"
+            # also recommended to put the database name inside a secret file
+            - name: database__connection__database
+              value: ghost
+            - name: url
+              value: "http://paixus.com/blog"
+            - name: NODE_ENV
+              value: production
+          # end of envs
+          volumeMounts:
+            # define persistent storage for themes and images
+            - mountPath: /var/lib/ghost/content/
+              name: pd-blog-volume
+              subPath: blog
+            # resource ghost needs
+          resources:
+            requests:
+              cpu: "130m"
+              memory: "256Mi"
+            limits:
+              cpu: "140m"
+              memory: "512Mi"
+        # cloudsql proxy container
+        # We are pulling the Cloud SQL Proxy container from the official Google
+        # container repository
+        - image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          name: cloudsql-proxy
+          # You can make environment variables from GKE configurations
+          # You can read them from a configmap directly with configMapKeyRef
+          env:
+            - name: INSTANCE_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: connectionname-ghost
+                  key: connectionname-ghost
+          command: [
+              "/cloud_sql_proxy",
+              "-instances=$(INSTANCE_CONNECTION)=tcp:5432",
+              # We are accessing the secret file inside the volume.
+              # In most circumstances you would use environment variables but
+              # the Cloud SQL Proxy container wants a file so we give it one
+              "-credential_file=/secrets/cloudsql/credentials-ghost.json"
+          ]
+          # Once the volume is made earlier in the file you then mount the
+          # volume so you can access the secret file inside it
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+          # resource cloudsql needs
+          resources:
+            requests:
+              cpu: "15m"
+              memory: "64Mi"
+            limits:
+              cpu: "20m"
+              memory: "128Mi"
+      volumes:
+      # db credentials stored in this volume to access our mysql
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      - name: cloudsql
+        emptyDir:
+      # persistent storage used to store our themes and images
+      # please note that we are using the predefined volume claim
+      - name: pd-blog-volume
+        persistentVolumeClaim:
+          claimName: pd-blog-volume-claim
+
+            
