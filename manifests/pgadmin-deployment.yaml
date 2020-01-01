@@ -61,11 +61,11 @@ spec:
               name: pgadmin4
           resources:
             limits:
-              cpu: 100m
-              memory: 156Mi
+              cpu: 130m
+              memory: 256Mi
             requests:
-              cpu: 80m
-              memory: 100Mi
+              cpu: 140m
+              memory: 512Mi
         # We are pulling the Cloud SQL Proxy container from the official Google
         # container repository
         - image: gcr.io/cloudsql-docker/gce-proxy:1.11
