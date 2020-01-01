@@ -20,7 +20,7 @@ kubectl create secret generic cloudsql-instance-credentials
 
 
 kubectl --namespace production create secret generic cloudsql-db-credentials \
---from-literal=user=dbadmin \
+--from-literal=username=dbadmin \
 --from-literal=password=7B%v%r376V^V;$8
 
 kubectl create secret generic cloudsql-db-credentials 
