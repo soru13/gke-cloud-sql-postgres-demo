@@ -29,7 +29,7 @@ GKE_VERSION=$(gcloud container get-server-config --zone "$CLUSTER_ZONE" \
 gcloud container clusters create "$CLUSTER_NAME" \
 --cluster-version 1.13.11-gke.14 \
 --num-nodes 1 \
---machine-type "custom-3,072" \
+--machine-type "custom-2-3072" \
 --enable-autorepair \
 --zone "$CLUSTER_ZONE" \
 --service-account="paixus-node-sa@$PROJECT".iam.gserviceaccount.com \
