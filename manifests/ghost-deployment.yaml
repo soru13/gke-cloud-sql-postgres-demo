@@ -18,7 +18,7 @@ spec:
       containers:
         # ghost container
         - name: ghost-container
-          image: ghost:alpine
+          image: ghost:3.2.0-alpine
           imagePullPolicy: IfNotPresent
           # ghost always starts on this port
           ports:
