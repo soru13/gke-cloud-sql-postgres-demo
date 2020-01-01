@@ -61,7 +61,7 @@ spec:
               name: pgadmin4
           resources:
             limits:
-              cpu: 140
+              cpu: 130m
               memory: 512Mi
             requests:
               cpu: 130m
