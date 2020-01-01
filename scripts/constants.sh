@@ -18,7 +18,7 @@ PROJECT=$(gcloud config get-value core/project)
 export PROJECT
 CLUSTER_ZONE=$(gcloud config get-value compute/zone)
 export CLUSTER_ZONE
-export CLUSTER_NAME=paixus
+export CLUSTER_NAME=paixus-cluster
 
 INSTANCE_REGION=$(gcloud config get-value compute/region)
 export INSTANCE_REGION
