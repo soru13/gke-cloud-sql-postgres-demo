@@ -17,3 +17,25 @@ kubectl --namespace production create secret generic cloudsql-instance-credentia
 
 kubectl create secret generic cloudsql-instance-credentials 
 --from-file=credentials.json=[PATH_TO_DOWNLOADED_JSON_SECRET]
+
+
+kubectl --namespace production create secret generic cloudsql-db-credentials \
+--from-literal=user=dbadmin \
+--from-literal=password=7B%v%r376V^V;$8
+
+kubectl create secret generic cloudsql-db-credentials 
+--from-literal=username=proxyuser 
+--from-literal=password=[PASSWORD]
+
+gcloud sql instances describe paixus-ghost \
+--format="value(connectionName)"
+
+kubectl --namespace production create configmap connectionname-ghost \
+--from-literal=connectionname-ghost=paixus:us-west2:paixus-ghost
+
+kubectl --namespace production create secret generic mail-secrets \
+--from-literal=mailuser=paixus \
+--from-literal=mailpass=..pZ8vAymuu@DY2pM3rf
+
+
+kubectl --namespace production create secret generic mail-secrets --from-literal=mailuser=paixus --from-literal=mailpass=..pZ8vAymuu@DY2pM3rf
