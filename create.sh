@@ -28,7 +28,7 @@ ROOT=$(dirname "${BASH_SOURCE[0]}")
 LC_CTYPE=C
 RANDOM_SUFFIX=$(tr -dc 'a-z0-9' </dev/urandom | fold -w 6 | head -n 1)
 #export INSTANCE_NAME=paixus-app-${RANDOM_SUFFIX}
-export INSTANCE_NAME=paixus-ghost
+export INSTANCE_NAME=paixus-app
 echo "$INSTANCE_NAME" > "${ROOT}"/.instance
 
 if [ -z "$INSTANCE_NAME" ] ; then
@@ -88,10 +88,10 @@ fi
 ROOT=$(dirname "${BASH_SOURCE[0]}")
 
 if "$ROOT"/scripts/prerequisites.sh; then
-  #"$ROOT"/scripts/enable_apis.sh
+  "$ROOT"/scripts/enable_apis.sh
   #"$ROOT"/scripts/postgres_instance.sh
   "$ROOT"/scripts/service_account.sh
-  #"$ROOT"/scripts/cluster.sh
+  "$ROOT"/scripts/cluster.sh
   "$ROOT"/scripts/configs_and_secrets.sh
-  #"$ROOT"/scripts/pgadmin_deployment.sh
+  "$ROOT"/scripts/pgadmin_deployment.sh
 fi
