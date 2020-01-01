@@ -18,7 +18,7 @@ spec:
       containers:
         # ghost container
         - name: ghost-container
-          image: ghost:3.1.1-alpine
+          image: ghost:alpine
           imagePullPolicy: IfNotPresent
           # ghost always starts on this port
           ports:
@@ -75,12 +75,12 @@ spec:
               subPath: blog
             # resource ghost needs
           resources:
-            limits:
-                cpu: 100m
-                memory: 200Mi
             requests:
-                cpu: 80m
-                memory: 156Mi
+                cpu: "130m"
+                memory: "256Mi"
+            limits:
+                cpu: "140m"
+                memory: "312Mi"
         # cloudsql proxy container
         # We are pulling the Cloud SQL Proxy container from the official Google
         # container repository
